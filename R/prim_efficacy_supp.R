@@ -57,7 +57,7 @@ dat_mice0 <- mice(eff_base_mod,maxit=0)
 pred <- dat_mice0$predictorMatrix
 pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment variable
 
-dat_mice <- mice(eff_base_mod,m=20,printFlag = F,.Random.seed=14,
+dat_mice <- mice(eff_base_mod,m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice <- with(dat_mice,glm(halt~ran_trt,family="binomial"))
 halt_supp_ratio <- avg_comparisons(mod_mice,variables=list(ran_trt = c("ASA", "DOAC")),

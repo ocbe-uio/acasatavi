@@ -67,5 +67,8 @@ rm(list = objects())
 source("R/prim_efficacy_subgroups.R")
 rm(list = objects())
 
+source("R/prim_safety_subgroups.R")
+rm(list = objects())
+
 source("R/key_secondary.R")
 rm(list = objects())

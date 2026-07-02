@@ -6,7 +6,7 @@
 
 #Reviewed 30JUN2026 Inge Christoffer Olsen
 # Comment: The treatment should be included as an explanatory variable in the 
-# imputation model because it is a non-inferiority assessment. 
+# imputation model because it is a non-inferiority assessment. Yes, this has been added now (CC).
 
 ###############################
 
@@ -104,7 +104,7 @@ safsum <- safsum[c(6,1,7,2:5),]
 # Adjusted analysis - multiple imputation with imputation model - containing TREATMENT
 library(mice)
 
-dat_mice <- mice(saf_base_mod,m=20,printFlag = F,.Random.seed=14)
+dat_mice <- mice(saf_base_mod,m=20,printFlag = F,seed=11254)
 saf_mod_mice <- with(dat_mice,glm(safety~ran_trt+age+sex+cad+prev_stroke+
                                     diabetes+hypertension+GFR,family="binomial"))
 safety_main_diff <- avg_comparisons(saf_mod_mice,variables=list(ran_trt = c("ASA", "DOAC")),
@@ -144,6 +144,49 @@ safety_sens1_ratio <- avg_comparisons(saf_mod_mice_sens1,variables=list(ran_trt 
                                      comparison="lnratioavg",transform=exp)
 
 
+# Summary figure
+safetyplot <- ggplot(safety_main_diff, aes(y=1, x = 100*estimate)) +
+  geom_point(colour="#008837",size=3) +
+  geom_errorbar(
+    aes(xmin = 100*conf.low, xmax = 100*conf.high),
+    linewidth = 0.3,width=0.1,colour="#008837")+
+  ylim(0,1.7) +xlim(-10,17)+
+  geom_vline(xintercept=11.9,linetype=2)+
+  geom_vline(xintercept=0,linetype=1)+
+  geom_hline(yintercept=0,linetype=1)+
+  labs(y=" ",
+       x="Absolute risk difference, DOAC minus ASA (percentage points)",
+       title="Safety composite")+
+  geom_text(
+    aes(label = paste0("95% CI ",round(100*conf.low,1)," to ",
+                       round(100*conf.high,1), " pp"),y=1),
+    size  = 4,vjust=2,colour="#008837"
+  ) +
+  geom_text(
+    aes(label = paste0(round(100*estimate,1)," pp"),y=1),
+    size  = 4,vjust=-2,colour="#008837"
+  ) +
+  geom_text(
+    aes(label = "No difference (0)",y=1.7,x=0),
+    size  = 4,vjust=-2,
+  ) +
+  geom_text(
+    aes(label = "NI margin (+11.9 pp)",y=1.7,x=11.9),
+    size  = 4,vjust=-2,
+  ) +
+  coord_cartesian(clip = "off") + 
+  theme_bw() +
+  theme(legend.position = "none", # no legend
+        panel.border    = element_blank(),
+        plot.background = element_blank(),
+        plot.title = element_text(hjust = 0.5,vjust=7, face = "bold"),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y   = element_blank(),
+        plot.margin        = margin(20, 5.5, 5.5, 5.5))  
+
 
 ### Adjusted analysis - complete case
 saf_mod_sens2 <- glm(safety~ran_trt+age+sex+cad+prev_stroke+
@@ -173,6 +216,6 @@ safety_sens3_ratio <- avg_comparisons(saf_mod_sens3,variables=list(ran_trt = c("
 
 ### Saving stuff
 
-save(safsum,safety_main_diff,safety_main_ratio,safety_sens1_diff,
+save(safsum,safetyplot,safety_main_diff,safety_main_ratio,safety_sens1_diff,
      safety_sens1_ratio,safety_sens2_diff,safety_sens2_ratio,safety_sens3_diff,
      safety_sens3_ratio,file="data/res/prim_saf_tab.RData")

@@ -2,3 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Ignore Word documents
+*.docx
+
+# Ignore HTML files
+*.html
+
+# Ignore an old version of the report
+report_acasatavi_sham_old_170626.Rmd

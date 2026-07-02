@@ -77,7 +77,7 @@ saf_base_mod[idc,3:(p+1)]
 library(mice)
 
 dat_mice <- mice(saf_base_mod[,c("safety","ran_trt","age","sex","cad","prev_stroke",
-                                 "diabetes","hypertension","GFR")],m=20,printFlag = F,.Random.seed=14)
+                                 "diabetes","hypertension","GFR")],m=20,printFlag = F,seed=11254)
 saf_mod_mice <- with(dat_mice,glm(safety~ran_trt+age+sex+cad+prev_stroke+
                                     diabetes+hypertension+GFR,family="binomial"))
 safety_main_diff <- avg_comparisons(saf_mod_mice,variables=list(ran_trt = c("ASA", "DOAC")),
@@ -331,7 +331,7 @@ SAFsubgroups <- ggplot() +
   # reference line
   geom_vline(xintercept = 1, linetype = 2, colour = "grey40") +
   # CIs and points (exclude header rows)
-  geom_errorbarh(
+  geom_errorbar(
     data = df_with_headers %>% filter(!is_header),
     aes(y = row_factor, xmin = lo, xmax = hi),
     height = 0.15, colour = "navy"

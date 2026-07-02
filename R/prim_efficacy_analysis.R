@@ -129,9 +129,10 @@ dat_mice0 <- mice(eff_base_mod,maxit=0)
 pred <- dat_mice0$predictorMatrix
 pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment variable
 
-dat_mice <- mice(eff_base_mod,m=20,printFlag = F,.Random.seed=14,
+dat_mice <- mice(eff_base_mod,m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice <- with(dat_mice,glm(halt2~ran_trt,family="binomial"))
+halt_preds <- avg_predictions(mod_mice,by="ran_trt")
 halt_main_ratio <- avg_comparisons(mod_mice,variables=list(ran_trt = c("ASA", "DOAC")),
                             comparison="lnratioavg",transform=exp)
 
@@ -153,6 +154,34 @@ diagMI_long$value <- as.numeric(diagMI_long$value)
 ggplot(diagMI_long,aes(x=dataset,y=value,color=name,shape=name))+geom_point()
 # Imputation model sometimes imputes more events in the DOAC group 
 # but not very much more than in the complete data
+
+# Summary figure
+haltplot <- ggplot(halt_preds, aes(x = ran_trt, y = 100*estimate, fill = ran_trt)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.6) +
+  geom_errorbar(
+    aes(ymin = 100*conf.low, ymax = 100*conf.high),
+    position = position_dodge(width = 0.8),
+    linewidth = 0.1,width=0.1
+  )+
+  geom_vline(xintercept=0.3,linetype=1)+
+  geom_hline(yintercept=0,linetype=1)+
+  ylim(0,40) +
+  labs(x="Error bars: 95% CI",
+         y="Patients with HALT (%)",
+         title="HALT")+
+  geom_text(
+    aes(label = paste0(round(100*estimate),"%"),y=100*conf.high+2),
+    size  = 4
+  ) +
+  theme_bw() +
+  theme(legend.position = "none", # no legend
+        panel.border    = element_blank(),
+        plot.background = element_blank(),
+        plot.title = element_text(hjust = 0.5,vjust=1, face = "bold"))  +
+  scale_fill_manual(values = c(
+    DOAC = "#0571b0",
+    ASA = "#d95f02"
+  ))
 
 ######## Sensitivity analyses ########################
 
@@ -182,7 +211,7 @@ halt_sens3_ratio <- avg_comparisons(halt_mod_sens3,variables=list(ran_trt = c("A
 halt_sens3_diff <- avg_comparisons(halt_mod_sens3,variables=list(ran_trt = c("ASA", "DOAC")))
 
 ### Saving stuff
-save(effsum2,halt_main_ratio,halt_main_diff,halt_sens1_diff,
+save(effsum2,haltplot, halt_main_ratio,halt_main_diff,halt_sens1_diff,
      halt_sens1_ratio,halt_sens2_diff,halt_sens2_ratio,halt_sens3_diff,
      halt_sens3_ratio,file="data/res/prim_eff_tab.RData")
 

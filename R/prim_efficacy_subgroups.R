@@ -83,7 +83,7 @@ pred <- dat_mice0$predictorMatrix
 pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment variable
 
 dat_mice <- mice(eff_base_mod[,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice <- with(dat_mice,glm(halt2~ran_trt,family="binomial"))
 halt_main_ratio <- avg_comparisons(mod_mice,variables=list(ran_trt = c("ASA", "DOAC")),
@@ -98,7 +98,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "ageF"] <- 0 # to ensure that imputation model does not use subgroup 
 
 dat_mice <- mice(eff_base_mod[,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","ageF")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","ageF")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice1 <- with(dat_mice,glm(halt2~ran_trt*ageF,family="binomial"))
 halt_sub1 <- avg_comparisons(mod_mice1,variables=list(ran_trt = c("ASA", "DOAC")),by=c("ageF"),
@@ -113,7 +113,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "sex"] <- 0 # to ensure that imputation model does not use subgroup
 
 dat_mice <- mice(eff_base_mod[,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","sex")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","sex")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice2 <- with(dat_mice,glm(halt2~ran_trt*sex,family="binomial"))
 halt_sub2 <- avg_comparisons(mod_mice2,variables=list(ran_trt = c("ASA", "DOAC")),by=c("sex"),
@@ -128,7 +128,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "diabetesF"] <- 0 # to ensure that imputation model does not use subgroup 
 
 dat_mice <- mice(eff_base_mod[-idm,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","diabetesF")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","diabetesF")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice3 <- with(dat_mice,glm(halt2~ran_trt*diabetesF,family="binomial"))
 halt_sub3 <- avg_comparisons(mod_mice3,variables=list(ran_trt = c("ASA", "DOAC")),by=c("diabetesF"),
@@ -144,7 +144,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "hypertensionF"] <- 0 # to ensure that imputation model does not use subgroup 
 
 dat_mice <- mice(eff_base_mod[-idm,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","hypertensionF")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","hypertensionF")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice4 <- with(dat_mice,glm(halt2~ran_trt*hypertensionF,family="binomial"))
 halt_sub4 <- avg_comparisons(mod_mice4,variables=list(ran_trt = c("ASA", "DOAC")),by=c("hypertensionF"),
@@ -159,7 +159,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "renal_function"] <- 0 # to ensure that imputation model does not subgroup 
 
 dat_mice <- mice(eff_base_mod[,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","renal_function")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","renal_function")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice5 <- with(dat_mice,glm(halt2~ran_trt*renal_function,family="binomial"))
 halt_sub5 <- avg_comparisons(mod_mice5,variables=list(ran_trt = c("ASA", "DOAC")),by=c("renal_function"),
@@ -174,7 +174,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "valve_type"] <- 0 # to ensure that imputation model does not subgroup 
 
 dat_mice <- mice(eff_base_mod[-idm,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","valve_type")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","valve_type")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice6 <- with(dat_mice,glm(halt2~ran_trt*valve_type,family="binomial"))
 halt_sub6 <- avg_comparisons(mod_mice6,variables=list(ran_trt = c("ASA", "DOAC")),by=c("valve_type"),
@@ -189,7 +189,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "pdF"] <- 0 # to ensure that imputation model does not subgroup 
 
 dat_mice <- mice(eff_base_mod[-idm,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","pdF")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","pdF")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice7 <- with(dat_mice,glm(halt2~ran_trt*pdF,family="binomial"))
 halt_sub7 <- avg_comparisons(mod_mice7,variables=list(ran_trt = c("ASA", "DOAC")),by=c("pdF"),
@@ -204,7 +204,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "ascF"] <- 0 # to ensure that imputation model does not subgroup 
 
 dat_mice <- mice(eff_base_mod[,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","ascF")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","ascF")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice8 <- with(dat_mice,glm(halt2~ran_trt*ascF,family="binomial"))
 halt_sub8 <- avg_comparisons(mod_mice8,variables=list(ran_trt = c("ASA", "DOAC")),by=c("ascF"),
@@ -219,7 +219,7 @@ pred[, "ran_trt"] <- 0 # to ensure that imputation model does not use treatment 
 pred[, "frailty_status"] <- 0 # to ensure that imputation model does not subgroup 
 
 dat_mice <- mice(eff_base_mod[,c("halt2","ran_trt","bmi","sodium","potassium",
-                                 "ALT","triglycerides","albumin","bilirubin","frailty_status")],m=20,printFlag = F,.Random.seed=14,
+                                 "ALT","triglycerides","albumin","bilirubin","frailty_status")],m=20,printFlag = F,seed=11254,
                  predictorMatrix = pred)
 mod_mice9 <- with(dat_mice,glm(halt2~ran_trt*frailty_status,family="binomial"))
 halt_sub9 <- avg_comparisons(mod_mice9,variables=list(ran_trt = c("ASA", "DOAC")),by=c("frailty_status"),
@@ -380,7 +380,7 @@ HALTsubgroups <- ggplot() +
   # reference line
   geom_vline(xintercept = 1, linetype = 2, colour = "grey40") +
   # CIs and points (exclude header rows)
-  geom_errorbarh(
+  geom_errorbar(
     data = df_with_headers %>% filter(!is_header),
     aes(y = row_factor, xmin = lo, xmax = hi),
     height = 0.15, colour = "navy"
