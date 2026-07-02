@@ -164,11 +164,11 @@ baseline_td <- left_join(baseline_td,eco_bas,by="subjectid")
 
 ##### Frailty index ##### 
 baseline_td$mini_cog[baseline_td$mini_cog=="Not done"] <- NA
-baseline_td <- baseline_td %>% mutate(hemoglobin_low=(ifelse(sex=="Male" & hemoglobin<13,1,0)+
-                                                         ifelse(sex=="Female" & hemoglobin<12,1,0)))
+baseline_td <- baseline_td %>% mutate(hemoglobin_low=(ifelse(sex=="Male" & round(hemoglobin,1)<13,1,0)+
+                                                         ifelse(sex=="Female" & round(hemoglobin,1)<12,1,0)))
 baseline_td <- baseline_td %>% mutate(cog_imp=(ifelse(mini_cog=="2" | mini_cog=="1" | mini_cog=="0",1,0)))
-baseline_td <- baseline_td %>% mutate(sts=ifelse(five_sts>=15,1,0))
-baseline_td <- baseline_td %>% mutate(alb=ifelse(albumin<35,1,0))
+baseline_td <- baseline_td %>% mutate(sts=ifelse(round(five_sts,1)>=15,1,0))
+baseline_td <- baseline_td %>% mutate(alb=ifelse(round(albumin)<35,1,0))
 baseline_td <- baseline_td %>% mutate(tmp_sum = 
                                         rowSums(across(c(sts, cog_imp, 
                                                          hemoglobin_low, alb)), na.rm = TRUE),

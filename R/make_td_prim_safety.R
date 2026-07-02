@@ -165,7 +165,8 @@ cso$safety <- ifelse(cso$stroke=="yes" | cso$mi=="yes" | cso$death=="yes" | cso$
                   ifelse((cso$stroke=="no" & cso$mi=="no" & cso$death=="no" & cso$varc=="no"),0,NA))
 tablec(cso$safety)
 # 6 with missing NA/MI and/or VARC:
-cso %>% filter(is.na(safety)) %>% select(subjectid,stroke,mi,death,varc) %>% print(n=17)
+#cso %>% filter(is.na(safety)) %>% select(subjectid,stroke,mi,death,varc) %>% print(n=17)
+#cso %>% filter(safety==0) %>% select(subjectid,stroke,mi,death,varc) %>% print(n=32)
 
 ##### Safety2 also includes TIA (for secondary endpoint) #####
 cso$safety2 <- ifelse(cso$safety==1 | cso$tia,1,
