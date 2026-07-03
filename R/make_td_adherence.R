@@ -95,7 +95,7 @@ all <- all %>% mutate(time_in_study=eos_date-ran_date)
 length(unique(dv$subjectid))
 tablec(dv$dvcat)
 tablec(dv$dvplclas)
-# all protocol deviations are deemed "not important", or NA
+# all protocol deviations are deemed "not important"
 
 idc <- which(nonCompl$subjectid %in% dv$subjectid)
 nonCompl[idc,]

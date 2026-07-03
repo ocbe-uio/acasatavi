@@ -49,12 +49,8 @@ This report summarises the results from the analysis of primary and secondary en
 
 All 360 randomised patients are included in all analyses (except in some sensitivity analyses, where this is made explicit). The analyses have been implemented according to the SAP version 1.0, dated July 3rd 2026.
 
-The present results are built on *sham randomisation* generated from the most recent export from Viedoc. No true treatment assignments have been unlocked. All findings in this document should therefore be interpreted as preliminary and descriptive only. Final efficacy comparisons will not be conducted until the database is locked and genuine randomisation codes are used.
 
-<!--
 Database was locked on 03.07.2026. The present results are based on the real treatment allocation.
--->
-
 
 # Patient enrolment and disposition 
 

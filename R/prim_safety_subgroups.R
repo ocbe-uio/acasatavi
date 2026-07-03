@@ -329,7 +329,7 @@ SAFsubgroups <- ggplot() +
     hjust = 0, size = 7
   ) +
   # reference line
-  geom_vline(xintercept = 1, linetype = 2, colour = "grey40") +
+  geom_vline(xintercept = 0, linetype = 2, colour = "grey40") +
   # CIs and points (exclude header rows)
   geom_errorbar(
     data = df_with_headers %>% filter(!is_header),
