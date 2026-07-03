@@ -79,11 +79,12 @@ pct_doac <- 100*n_halt_doac/n_tot_doac
 pct_asa <- 100*n_halt_asa/n_tot_asa
 pct_all <- 100*(n_halt_doac+n_halt_asa)/(n_tot_doac+n_tot_asa)
 
-effsum <- eff %>% group_by(ran_trt,cthalt) %>% summarise(n=n(),.groups = "drop_last") %>%
+effsum <- eff %>% group_by(ran_trt,cthalt,.drop=FALSE) %>% summarise(n=n(),.groups = "drop_last") %>%
   pivot_wider(names_from=ran_trt,values_from=n)
 effsum <- effsum %>% mutate(Overall=rowSums(effsum[,2:3]))
 effsum$cthalt <- as.character(effsum$cthalt)
 effsum$cthalt[is.na(effsum$cthalt)] <- "Missing HALT"
+#effsum$DOAC[is.na(effsum$DOAC)] <- 0
 effsum <- effsum %>% mutate(DOAC=as.character(DOAC),ASA=as.character(ASA),
                             Overall=as.character(Overall))
 #effsum <- effsum %>% 
@@ -165,7 +166,7 @@ haltplot <- ggplot(halt_preds, aes(x = ran_trt, y = 100*estimate, fill = ran_trt
   )+
   geom_vline(xintercept=0.3,linetype=1)+
   geom_hline(yintercept=0,linetype=1)+
-  ylim(0,40) +
+  ylim(0,45) +
   labs(x="Error bars: 95% CI",
          y="Patients with HALT (%)",
          title="HALT")+

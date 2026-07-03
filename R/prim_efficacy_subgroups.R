@@ -372,7 +372,7 @@ HALTsubgroups <- ggplot() +
   geom_text(
     data = df_with_headers,
     aes(
-      y = row_factor, x = 0.1, label = row_lab, #0.2
+      y = row_factor, x = 0.01, label = row_lab, hjust=-5, #0.2
       fontface = if_else(is_header | subgroup == "Overall", "bold", "plain")
     ),
     hjust = 0, size = 7
@@ -394,30 +394,30 @@ HALTsubgroups <- ggplot() +
   # side columns: N, Treat, Control
   geom_text(
     data = df_with_headers,
-    aes(y = row_factor, x = 3, label = lab_n), #0.4
+    aes(y = row_factor, x = 1.5, label = lab_n), #0.4
     hjust = 0, size = 7
   ) +
   geom_text(
     data = df_with_headers,
-    aes(y = row_factor, x = 3.2, label = lab_trt), #2.5
+    aes(y = row_factor, x = 1.7, label = lab_trt), #2.5
     hjust = 0, size = 7
   ) +
   geom_text(
     data = df_with_headers,
-    aes(y = row_factor, x = 3.7, label = lab_ctl),#3.5
+    aes(y = row_factor, x = 2, label = lab_ctl),#3.5
     hjust = 0, size = 7
   ) +
   # headers for those text columns
-  annotate("text", x = 3, y = Inf, label = "N",
+  annotate("text", x = 1.5, y = Inf, label = "N",
            hjust = 0, vjust = -0.1, size = 8, fontface = "bold") +
-  annotate("text", x = 3.2, y = Inf, label = "DOAC n(%)",
+  annotate("text", x = 1.7, y = Inf, label = "DOAC n(%)",
            hjust = 0, vjust = -0.1, size = 8, fontface = "bold") +
-  annotate("text", x = 3.7, y = Inf, label = "ASA n(%)",
+  annotate("text", x = 2, y = Inf, label = "ASA n(%)",
            hjust = 0, vjust = -0.1, size = 8, fontface = "bold") +
   # RR axis
   scale_x_continuous( #scale_x_log10
-    breaks = c( 0.5, 1,1.5, 2,3, 4),
-    limits = c(0.1, 4.5), # c(0.2, 4.5)
+    breaks = c( 0.5, 1,1.5, 2),
+    limits = c(0.01, 2.5), # c(0.2, 4.5)
     name   = "Risk Ratio (DOAC / ASA)"
   ) +
   coord_cartesian(clip = "off") + 
@@ -429,7 +429,7 @@ HALTsubgroups <- ggplot() +
     panel.grid.minor   = element_blank(),
     axis.title.y       = element_blank(),
     axis.text.y        = element_blank(),  # we drew labels manually
-    plot.margin        = margin(20, 5.5, 5.5, 5.5)
+    plot.margin        = margin(20, 5.5, 5.5, 10)
   )
 
 HALTsubgroups

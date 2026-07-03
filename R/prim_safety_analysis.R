@@ -71,7 +71,7 @@ n_notmissing <- sum(!is.na(saf$safety))
 n_saf <- length(which(saf$safety==1))
 # 9% event rate
 
-safsum0 <- saf %>% group_by(ran_trt,safety) %>% summarise(n=n(),.groups = "drop_last") %>%
+safsum0 <- saf %>% group_by(ran_trt,safety,.drop=FALSE) %>% summarise(n=n(),.groups = "drop_last") %>%
   pivot_wider(names_from=ran_trt,values_from=n)
 n_saf_doac <- as.numeric(safsum0 %>% filter(safety==1)%>%select(DOAC))
 n_saf_asa <- as.numeric(safsum0 %>% filter(safety==1)%>%select(ASA))
@@ -81,7 +81,7 @@ pct_doac <- 100*n_saf_doac/n_tot_doac
 pct_asa <- 100*n_saf_asa/n_tot_asa
 pct_all <- 100*(n_saf_doac+n_saf_asa)/(n_tot_doac+n_tot_asa)
 
-safsum <- saf %>% group_by(ran_trt,event_type) %>% summarise(n=n(),.groups = "drop_last") %>%
+safsum <- saf %>% group_by(ran_trt,event_type,.drop=FALSE) %>% summarise(n=n(),.groups = "drop_last") %>%
   pivot_wider(names_from=ran_trt,values_from=n)
 safsum <- safsum %>% filter(!is.na(event_type))
 colnames(safsum0)[1] <- "event_type"
@@ -90,6 +90,7 @@ safsum <- bind_rows(safsum0[which(safsum0$event_type==0),],safsum,
 safsum <- safsum %>% mutate(event_type = 
                               fct_recode(event_type,`No safety events`="0"))
 safsum <- safsum %>% mutate(event_type = fct_na_value_to_level(event_type, level = "Missing"))
+safsum$ASA[is.na(safsum$ASA)] <- 0
 safsum <- safsum %>% mutate(Overall=rowSums(safsum[,2:3]))
 safsum <- safsum %>% mutate(DOAC=as.character(DOAC),ASA=as.character(ASA),
                             Overall=as.character(Overall))
@@ -132,17 +133,6 @@ ggplot(diagMI_long,aes(x=dataset,y=value,color=name,shape=name))+geom_point()
 # Imputation model imputes a bit more events in the DOAC group 
 # but not very much more than in the complete data
 
-######## Sensitivity analyses ########################
-
-### Unadjusted analysis - multiple imputation
-saf_mod_mice_sens1 <- with(dat_mice,glm(safety~ran_trt,family="binomial"))
-safety_sens1_diff <- avg_comparisons(saf_mod_mice_sens1,variables=list(ran_trt = c("ASA", "DOAC")),
-                                    equivalence=c(NA,0.119))
-
-
-safety_sens1_ratio <- avg_comparisons(saf_mod_mice_sens1,variables=list(ran_trt = c("ASA", "DOAC")),
-                                     comparison="lnratioavg",transform=exp)
-
 
 # Summary figure
 safetyplot <- ggplot(safety_main_diff, aes(y=1, x = 100*estimate)) +
@@ -150,7 +140,7 @@ safetyplot <- ggplot(safety_main_diff, aes(y=1, x = 100*estimate)) +
   geom_errorbar(
     aes(xmin = 100*conf.low, xmax = 100*conf.high),
     linewidth = 0.3,width=0.1,colour="#008837")+
-  ylim(0,1.7) +xlim(-10,17)+
+  ylim(0,1.7) +xlim(-10,15)+
   geom_vline(xintercept=11.9,linetype=2)+
   geom_vline(xintercept=0,linetype=1)+
   geom_hline(yintercept=0,linetype=1)+
@@ -164,7 +154,7 @@ safetyplot <- ggplot(safety_main_diff, aes(y=1, x = 100*estimate)) +
   ) +
   geom_text(
     aes(label = paste0(round(100*estimate,1)," pp"),y=1),
-    size  = 6,vjust=-2,colour="#008837"
+    size  = 6,vjust=-1.5,colour="#008837"
   ) +
   geom_text(
     aes(label = "No difference (0)",y=1.7,x=0),
@@ -187,6 +177,19 @@ safetyplot <- ggplot(safety_main_diff, aes(y=1, x = 100*estimate)) +
         panel.grid.minor.y   = element_blank(),
         plot.margin        = margin(20, 5.5, 5.5, 5.5),
         text = element_text(size = 15))  
+
+
+
+######## Sensitivity analyses ########################
+
+### Unadjusted analysis - multiple imputation
+saf_mod_mice_sens1 <- with(dat_mice,glm(safety~ran_trt,family="binomial"))
+safety_sens1_diff <- avg_comparisons(saf_mod_mice_sens1,variables=list(ran_trt = c("ASA", "DOAC")),
+                                    equivalence=c(NA,0.119))
+
+
+safety_sens1_ratio <- avg_comparisons(saf_mod_mice_sens1,variables=list(ran_trt = c("ASA", "DOAC")),
+                                     comparison="lnratioavg",transform=exp)
 
 
 ### Adjusted analysis - complete case

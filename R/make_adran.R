@@ -34,11 +34,11 @@ table(adran$ran_trt)
 # # Introduce pseudorandomisation
 # # Remove when running final analysis
 # ###############################
-nn <- nrow(adran)
-ran_order <- sample(1:nn,nn,replace=F)
-adran$ran_trt <- adran$ran_trt[ran_order]
-adran$ran_trtcd <- adran$ran_trtcd[ran_order]
-table(adran$ran_trt,adran$ran_trtcd)
+# nn <- nrow(adran)
+# ran_order <- sample(1:nn,nn,replace=F)
+# adran$ran_trt <- adran$ran_trt[ran_order]
+# adran$ran_trtcd <- adran$ran_trtcd[ran_order]
+# table(adran$ran_trt,adran$ran_trtcd)
 
 # Remove until here
 ###########################################################

@@ -447,7 +447,7 @@ The study is inconclusive. We are not able to reject both null hypotheses.
 ```
 
 
-```{r primaryfig, echo = FALSE, fig.path="markdown_figs/" , fig.width = 12, fig.height=6, fig.cap="Summary of primary analyses."}
+```{r primaryfig, echo = FALSE, fig.path="markdown_figs/" , fig.width = 12, fig.height=6, fig.cap="Summary of primary analyses. The numbers is this plot are based on the fitted models for HALT and safety composite. "}
 ggarrange(haltplot,safetyplot,ncol=2,nrow=1)
 ```
 
